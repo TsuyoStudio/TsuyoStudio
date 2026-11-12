@@ -1,110 +1,39 @@
-[TsuyoStudio_README_v2.md](https://github.com/user-attachments/files/34756763/TsuyoStudio_README_v2.md)
 <div align="center">
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=180&color=0:151515,100:2A2A2A&text=TsuyoStudio&fontColor=ffffff&fontSize=46&fontAlignY=36&desc=Games%20•%20Código%20•%20Interfaces%20•%20Ideias%20fora%20da%20caixa&descAlignY=58&descSize=16" />
+<img src="./assets/hero.svg" width="100%" alt="TsuyoStudio — games, código e interfaces; layout minimalista escuro com detalhes rosa" />
 
-# E aí, eu sou o Tsuyo! 👋
+<a href="https://github.com/TsuyoStudio?tab=repositories">Repositórios</a> &nbsp;·&nbsp; <a href="https://github.com/TsuyoStudio?tab=overview">Visão geral</a> &nbsp;·&nbsp; <a href="https://github.com/TsuyoStudio/ts-downloads">Downloads</a>
 
-**Por trás do TsuyoStudio.**
+<br/><br/>
 
-🎮 Games • 💻 Código • 🎨 Interfaces • 🧩 Projetos que começaram com um simples "e se...?"
+<img src="./assets/about.svg" width="100%" alt="Tsuyo se apresenta em painel com humor e terminal ilustrativo" />
 
-*Às vezes eu resolvo bugs. Às vezes eu crio uns novos só pra não perder a prática.*
+<br/>
 
-</div>
+### PROJETOS EM CONSTRUÇÃO
 
----
+<img src="./assets/project-hub.svg" width="49%" alt="TS HUB — hub de jogos e mods, em desenvolvimento" /> <img src="./assets/project-chillife.svg" width="49%" alt="Chillife — recursos FiveM e QBCore, em desenvolvimento" />
 
-## 🚀 Sobre mim
+<sub>Projetos exibidos como portfólio. Alguns repositórios ainda são privados ou não foram publicados.</sub>
 
-Sou o criador por trás do **TsuyoStudio** — um espaço onde junto **games**, **interfaces**, **automação**, **recursos para FiveM** e qualquer ideia que pareça boa demais para ficar só na cabeça.
+<br/><br/>
 
-Gosto de pegar projetos malucos, organizar o caos e transformar tudo em algo bonito, funcional e com personalidade.
+<img src="./assets/workbench.svg" width="100%" alt="Minha bancada: Lua, JavaScript, HTML/CSS, UI/UX, FiveM e QBCore" />
 
----
+<br/>
 
-## 🛠️ O que eu curto construir
+<img src="./assets/stats-header.svg" width="100%" alt="Sinais de vida: estatísticas reais do GitHub" />
 
-- **Launchers e hubs de jogos**
-- **Interfaces modernas e minimalistas**
-- **Sistemas e recursos para FiveM / QBCore**
-- **Ferramentas e utilitários personalizados**
-- **Experimentos criativos que saíram do controle**
+<img height="180" src="https://github-readme-stats.vercel.app/api?username=TsuyoStudio&amp;show_icons=true&amp;hide_border=true&amp;title_color=FF0056&amp;icon_color=FF0056&amp;text_color=F4F4F4&amp;bg_color=151515&amp;include_all_commits=true" alt="Estatísticas públicas do GitHub de TsuyoStudio" /> <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=TsuyoStudio&amp;layout=compact&amp;hide_border=true&amp;title_color=FF0056&amp;text_color=F4F4F4&amp;bg_color=151515" alt="Linguagens usadas nos repositórios públicos de TsuyoStudio" />
 
----
+<br/>
 
-## 📌 Projetos em destaque
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=TsuyoStudio&amp;bg_color=151515&amp;color=F4F4F4&amp;line=FF0056&amp;point=FFFFFF&amp;area=true&amp;area_color=FF0056&amp;hide_border=true" width="100%" alt="Gráfico de atividade pública recente no GitHub" />
 
-> Alguns projetos ainda estão em desenvolvimento ou privados, mas já fazem parte do universo TsuyoStudio.
+<sub>Os dados são gerados por serviços externos e refletem principalmente a atividade pública. Se um serviço estiver indisponível, o gráfico pode não aparecer.</sub>
 
-### 🎮 TS HUB
-Um hub para jogos com foco em organização, experiência visual e liberdade para montar packs, mods e instalações de forma mais elegante.
+<br/><br/>
 
-### 🌆 Chillife
-Base, interfaces e recursos personalizados para FiveM com foco em imersão, visual limpo e experiência moderna.
-
-### 🧰 TS Resources
-Coleção de recursos, ferramentas e ideias práticas para acelerar projetos e facilitar a vida no dia a dia.
-
----
-
-## 📊 Estatísticas
-
-<div align="center">
-  <img height="165" src="https://github-readme-stats.vercel.app/api?username=TsuyoStudio&show_icons=true&hide_border=true&title_color=ff0056&icon_color=ff0056&text_color=c9d1d9&bg_color=00000000&rank_icon=github" />
-  <img height="165" src="https://github-readme-stats.vercel.app/api/top-langs/?username=TsuyoStudio&layout=compact&hide_border=true&title_color=ff0056&text_color=c9d1d9&bg_color=00000000" />
-</div>
-
-<div align="center">
-  <img width="100%" src="https://github-readme-activity-graph.vercel.app/graph?username=TsuyoStudio&bg_color=00000000&color=c9d1d9&line=ff0056&point=ffffff&area=true&hide_border=true" />
-</div>
-
-> Se os gráficos não aparecerem de primeira, relaxa. Às vezes o GitHub e os serviços externos demoram um pouco para conversar entre si. 😅
-
----
-
-## 💻 Minha bancada
-
-<div align="center">
-
-![Lua](https://img.shields.io/badge/Lua-111111?style=for-the-badge&logo=lua&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-111111?style=for-the-badge&logo=javascript&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-111111?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-111111?style=for-the-badge&logo=css3&logoColor=white)
-![FiveM](https://img.shields.io/badge/FiveM-111111?style=for-the-badge&logo=rockstargames&logoColor=white)
-![QBCore](https://img.shields.io/badge/QBCore-111111?style=for-the-badge&logo=github&logoColor=white)
-![UI/UX](https://img.shields.io/badge/UI%2FUX-111111?style=for-the-badge&logo=figma&logoColor=white)
-
-</div>
-
----
-
-## 🧠 Filosofia não oficial do estúdio
-
-```txt
-[✓] Ideia boa
-[✓] Interface bonita
-[✓] Café
-[✓] Persistência
-[ ] Ausência de bugs
-```
-
-> **Resumo técnico:** a criatividade vai bem. A paciência depende do erro no console.
-
----
-
-## 📫 Onde me encontrar
-
-- GitHub: **[@TsuyoStudio](https://github.com/TsuyoStudio)**
-- Perfil / portfólio: em construção
-- Status atual: provavelmente ajustando UI, mexendo em algum projeto ou domando bug teimoso
-
----
-
-<div align="center">
-
-### ✨ Obrigado por visitar meu perfil
-
-**Feito com criatividade, teimosia e alguns `Ctrl + Z`.** 🩷
+<img src="./assets/footer.svg" width="100%" alt="Construído com criatividade, teimosia e Ctrl+Z" />
 
 </div>
