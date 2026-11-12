@@ -24,13 +24,17 @@
 
 <img src="./assets/stats-header.svg" width="100%" alt="Sinais de vida: estatísticas reais do GitHub" />
 
-<img height="180" src="https://github-readme-stats.vercel.app/api?username=TsuyoStudio&amp;show_icons=true&amp;hide_border=true&amp;title_color=FF0056&amp;icon_color=FF0056&amp;text_color=F4F4F4&amp;bg_color=151515&amp;include_all_commits=true" alt="Estatísticas públicas do GitHub de TsuyoStudio" /> <img height="180" src="https://github-readme-stats.vercel.app/api/top-langs/?username=TsuyoStudio&amp;layout=compact&amp;hide_border=true&amp;title_color=FF0056&amp;text_color=F4F4F4&amp;bg_color=151515" alt="Linguagens usadas nos repositórios públicos de TsuyoStudio" />
+<img src="./assets/stats/summary.svg" width="100%" alt="Números públicos reais: repositórios, estrelas e seguidores" />
 
 <br/>
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=TsuyoStudio&amp;bg_color=151515&amp;color=F4F4F4&amp;line=FF0056&amp;point=FFFFFF&amp;area=true&amp;area_color=FF0056&amp;hide_border=true" width="100%" alt="Gráfico de atividade pública recente no GitHub" />
+<img src="./assets/stats/languages.svg" width="100%" alt="Linguagens utilizadas nos repositórios públicos" />
 
-<sub>Os dados são gerados por serviços externos e refletem principalmente a atividade pública. Se um serviço estiver indisponível, o gráfico pode não aparecer.</sub>
+<br/>
+
+<img src="./assets/stats/activity.svg" width="100%" alt="Contribuições públicas registradas pelo calendário oficial do GitHub" />
+
+<sub>Gráficos gerados pela API oficial do GitHub e salvos neste repositório. Atualização automática diária pelo GitHub Actions; repositórios privados não entram no gráfico de linguagens.</sub>
 
 <br/><br/>
 
