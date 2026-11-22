@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "profile": "TsuyoStudio",
+  "week_start": "2026-11-16",
+  "week_end": "2026-11-22",
+  "verified_on": "2026-11-22",
+  "timezone": "America/Sao_Paulo",
+  "daily_commits": {
+    "2026-11-16": 0,
+    "2026-11-17": 40,
+    "2026-11-18": 81,
+    "2026-11-19": 60,
+    "2026-11-20": 163,
+    "2026-11-21": 145,
+    "2026-11-22": 3
+  },
+  "total_commits": 492,
+  "changed_files_main": 159,
+  "repos_checked": 3,
+  "repository_branches_checked": 33,
+  "includes_private_repositories": true,
+  "source": "Consulta autenticada aos repositorios acessiveis no GitHub",
+  "counting_rule": "SHA unico por repositorio entre branches, autoria GitHub TsuyoStudio, sem bots; datas em America/Sao_Paulo",
+  "changed_files_rule": "Arquivos distintos nas comparacoes semanais de main; repositorios criados na semana contam arquivos atuais. Nao representa todos os arquivos tocados em cada commit das branches.",
+  "refresh_note": "O GitHub Actions padrao nao pode ler outros repositorios privados. Sem PROFILE_STATS_TOKEN, este recorte permanece como snapshot datado."
+}
