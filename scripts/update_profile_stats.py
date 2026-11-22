@@ -121,21 +121,49 @@ if TOKEN:
 
 body = txt(32, 47, "CONTRIBUIÇÕES / ÚLTIMOS 12 MESES", 19, TEXT, 700)
 body += f'<path d="M30 65H1170" stroke="{BORDER}"/>'
+
+def contribution_color(value):
+    return "#292929" if value == 0 else "#5A1532" if value == 1 else "#981842" if value < 4 else PINK
+
 if weeks:
-    body += txt(33, 101, f"{total_contributions} contribuições no período", 18, PINK, 700)
-    # Grade por semanas, respeitando semanas parciais.
+    active_days = sum(1 for week in weeks for day in week["contributionDays"]
+                      if day["contributionCount"] > 0)
+    body += txt(33, 100, f"{total_contributions} contribuições no período", 18, PINK, 700)
+    body += txt(946, 100, f"{active_days} dias com registro", 14, MUTED, 700)
+
+    # Calendário anual: uma célula por dia, conforme o GitHub.
     for ix, week in enumerate(weeks):
         for day in week["contributionDays"]:
             date_obj = dt.date.fromisoformat(day["date"])
             weekday = (date_obj.weekday() + 1) % 7
-            value = day["contributionCount"]
-            color = "#292929" if value == 0 else "#5A1532" if value == 1 else "#981842" if value < 4 else PINK
-            x = 33 + ix*21
-            y = 122 + weekday*21
+            color = contribution_color(day["contributionCount"])
+            x = 33 + ix * 21
+            y = 136 + weekday * 21
             body += f'<rect x="{x}" y="{y}" width="16" height="16" rx="3" fill="{color}"/>'
+
+    # Um segundo quadro amplia os mesmos dias recentes; não soma
+    # contribuições nem inventa atividade de repositórios privados.
+    body += f'<path d="M30 302H1170" stroke="{BORDER}"/>'
+    body += txt(33, 332, "FOCO / ÚLTIMAS 13 SEMANAS", 17, TEXT, 700)
+    for ix, week in enumerate(weeks[-13:]):
+        for day in week["contributionDays"]:
+            date_obj = dt.date.fromisoformat(day["date"])
+            weekday = (date_obj.weekday() + 1) % 7
+            color = contribution_color(day["contributionCount"])
+            x = 34 + ix * 20
+            y = 353 + weekday * 20
+            body += f'<rect x="{x}" y="{y}" width="15" height="15" rx="3" fill="{color}"/>'
+    body += txt(365, 389, "ATIVIDADE REAL / GITHUB", 17, TEXT, 700)
+    body += txt(365, 421, "Visão ampliada dos dias mais recentes.", 15, MUTED)
+    body += txt(365, 450, "Mesma fonte e contagem do calendário anual.", 15, MUTED)
+    body += txt(365, 477, "O trabalho privado só aparece quando registrado pelo GitHub.", 14, MUTED)
 else:
     body += txt(33, 146, "Contribuições anuais indisponíveis nesta atualização.", 19, MUTED)
     body += txt(33, 189, "Os demais indicadores continuam disponíveis.", 16, MUTED)
-body += txt(33, 310, f"Fonte: GitHub · atualização diária · {today}", 13, MUTED)
-save("activity.svg", panel(1200, 333, " ".join([body]), "Atividade GitHub de TsuyoStudio"))
+    body += f'<path d="M30 302H1170" stroke="{BORDER}"/>'
+    body += txt(33, 351, "O recorte recente também depende do calendário oficial.", 16, MUTED)
+
+body += txt(33, 513, f"Fonte: GitHub · atualização diária · {today}", 13, MUTED)
+save("activity.svg", panel(1200, 535, body, "Atividade GitHub de TsuyoStudio"))
+
 print("Estatísticas geradas:", [p.name for p in OUT.glob("*.svg")])
