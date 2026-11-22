@@ -8,9 +8,12 @@ import os
 import urllib.error
 import urllib.request
 from pathlib import Path
+from urllib.parse import quote
+from zoneinfo import ZoneInfo
 
 USER = os.getenv("PROFILE_USER", "TsuyoStudio")
-TOKEN = os.getenv("GH_TOKEN", "")
+PRIVATE_TOKEN = os.getenv("PROFILE_STATS_TOKEN", "").strip()
+TOKEN = PRIVATE_TOKEN or os.getenv("GH_TOKEN", "")
 OUT = Path("assets/stats")
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -119,6 +122,128 @@ if TOKEN:
     except (KeyError, TypeError, urllib.error.URLError, ValueError) as exc:
         print("GraphQL contributions not available:", str(exc))
 
+# Este painel adicional mostra commits efetivos, não as contribuições calculadas
+# pelo GitHub para o calendário oficial. Não há commits ou dias inventados.
+WEEKLY_PATH = OUT / "weekly-activity.json"
+LOCAL_TZ = ZoneInfo("America/Sao_Paulo")
+
+def read_weekly_snapshot():
+    try:
+        data = json.loads(WEEKLY_PATH.read_text(encoding="utf-8"))
+        if sum(data["daily_commits"].values()) != data["total_commits"]:
+            raise ValueError("Inconsistent weekly snapshot")
+        return data
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        print("Weekly snapshot unavailable:", str(exc))
+        return None
+
+def optional_live_weekly_snapshot():
+    """Recalcula privados somente com token explicito de leitura dos repos."""
+    if not PRIVATE_TOKEN:
+        return None
+    try:
+        now_local = dt.datetime.now(dt.timezone.utc).astimezone(LOCAL_TZ)
+        monday = now_local.date() - dt.timedelta(days=now_local.weekday())
+        sunday = monday + dt.timedelta(days=6)
+        start = dt.datetime.combine(monday, dt.time.min, LOCAL_TZ)
+        end = start + dt.timedelta(days=7)
+        start_iso = start.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        end_iso = (end - dt.timedelta(seconds=1)).astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        before_iso = (start - dt.timedelta(seconds=1)).astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        owned = []
+        for page in range(1, 11):
+            batch = api(f"https://api.github.com/user/repos?affiliation=owner&per_page=100&page={page}")
+            owned.extend(r for r in batch
+                         if r.get("owner", {}).get("login", "").casefold() == USER.casefold()
+                         and not r.get("fork"))
+            if len(batch) < 100:
+                break
+        if not any(r.get("private") for r in owned):
+            raise ValueError("PROFILE_STATS_TOKEN has no private repository access")
+
+        counts = {(monday + dt.timedelta(days=i)).isoformat(): 0 for i in range(7)}
+        changed_main = 0
+        nonempty = 0
+        branches_checked = 0
+
+        for repository in owned:
+            repo_id = repository["full_name"]
+            repo_api = "https://api.github.com/repos/" + quote(repo_id, safe="/")
+            seen = set()
+            branch_names = []
+            for page in range(1, 11):
+                batch = api(f"{repo_api}/branches?per_page=100&page={page}")
+                branch_names.extend(b["name"] for b in batch)
+                if len(batch) < 100:
+                    break
+            if not branch_names:
+                continue
+            nonempty += 1
+            branches_checked += len(branch_names)
+
+            for branch in branch_names:
+                for page in range(1, 31):
+                    url = (f"{repo_api}/commits?sha={quote(branch, safe='')}"
+                           f"&author={quote(USER)}&since={quote(start_iso)}"
+                           f"&until={quote(end_iso)}&per_page=100&page={page}")
+                    batch = api(url)
+                    for commit in batch:
+                        if (commit.get("author") or {}).get("login", "").casefold() != USER.casefold():
+                            continue
+                        sha = commit["sha"]
+                        if sha in seen:
+                            continue
+                        seen.add(sha)
+                        recorded = dt.datetime.fromisoformat(
+                            commit["commit"]["committer"]["date"].replace("Z", "+00:00")
+                        ).astimezone(LOCAL_TZ).date().isoformat()
+                        if recorded in counts:
+                            counts[recorded] += 1
+                    if len(batch) < 100:
+                        break
+
+            # Comparação de arquivos distintos na branch principal apenas.
+            default = repository.get("default_branch") or "main"
+            before = api(f"{repo_api}/commits?sha={quote(default, safe='')}"
+                         f"&until={quote(before_iso)}&per_page=1")
+            if before:
+                base_sha = before[0]["sha"]
+                diff = api(f"{repo_api}/compare/{base_sha}...{quote(default, safe='')}")
+                changed_main += len(diff.get("files") or [])
+            else:
+                # Repositório criado nesta semana: todos os arquivos atuais são novos.
+                tree = api(f"{repo_api}/git/trees/{quote(default, safe='')}?recursive=1")
+                changed_main += sum(1 for f in tree.get("tree", []) if f.get("type") == "blob")
+
+        snapshot = {
+            "schema_version": 1,
+            "profile": USER,
+            "week_start": monday.isoformat(),
+            "week_end": sunday.isoformat(),
+            "verified_on": now_local.date().isoformat(),
+            "timezone": "America/Sao_Paulo",
+            "daily_commits": counts,
+            "total_commits": sum(counts.values()),
+            "changed_files_main": changed_main,
+            "repos_checked": nonempty,
+            "repository_branches_checked": branches_checked,
+            "includes_private_repositories": True,
+            "source": "GitHub API autenticada",
+            "counting_rule": "SHA unico por repo entre branches; autor TsuyoStudio, sem bots",
+            "changed_files_rule": "Arquivos distintos na comparacao semanal da branch principal de cada repo",
+            "refresh_note": "Gerado com PROFILE_STATS_TOKEN; nao equivale ao calendario oficial do GitHub."
+        }
+        WEEKLY_PATH.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n",
+                               encoding="utf-8")
+        return snapshot
+    except (OSError, ValueError, KeyError, TypeError, urllib.error.URLError,
+            urllib.error.HTTPError) as exc:
+        print("Live private activity unavailable; preserving verified snapshot:", str(exc))
+        return None
+
+weekly = optional_live_weekly_snapshot() or read_weekly_snapshot()
+
 body = txt(32, 47, "CONTRIBUIÇÕES / ÚLTIMOS 12 MESES", 19, TEXT, 700)
 body += f'<path d="M30 65H1170" stroke="{BORDER}"/>'
 
@@ -163,7 +288,43 @@ else:
     body += f'<path d="M30 302H1170" stroke="{BORDER}"/>'
     body += txt(33, 351, "O recorte recente também depende do calendário oficial.", 16, MUTED)
 
-body += txt(33, 513, f"Fonte: GitHub · atualização diária · {today}", 13, MUTED)
-save("activity.svg", panel(1200, 535, body, "Atividade GitHub de TsuyoStudio"))
+body += txt(33, 513, f"Fonte: calendário GitHub · atualização diária · {today}", 13, MUTED)
+
+# Mantem os 371+91 quadrados anteriores e adiciona microquadrados
+# coloridos: um para cada commit verificado da semana (até 168/dia).
+body += f'<path d="M30 539H1170" stroke="{BORDER}"/>'
+if weekly:
+    monday = dt.date.fromisoformat(weekly["week_start"])
+    sunday = dt.date.fromisoformat(weekly["week_end"])
+    period = f"{monday.day:02d}/{monday.month:02d}–{sunday.day:02d}/{sunday.month:02d}"
+    body += txt(33, 567, f"COMMITS REAIS / {period}", 18, TEXT, 700)
+    body += txt(869, 567, f'{weekly["total_commits"]} COMMITS', 17, PINK, 700)
+    body += txt(1072, 567, f'{weekly["changed_files_main"]} ARQUIVOS', 14, MUTED, 700)
+    counts = weekly["daily_commits"]
+    max_day = max(counts.values()) if counts else 0
+    scale = max(1, (max_day + 167) // 168)
+    weekdays = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"]
+    for i in range(7):
+        date = monday + dt.timedelta(days=i)
+        amount = int(counts.get(date.isoformat(), 0))
+        x = 33 + i * 163
+        body += f'<rect x="{x}" y="588" width="150" height="225" rx="12" fill="#202020" stroke="{BORDER}"/>'
+        body += txt(x+12, 612, f"{weekdays[i]} {date.day:02d}", 13, MUTED, 700)
+        body += txt(x+12, 644, amount, 29, TEXT, 700)
+        body += txt(x+12, 795, "COMMITS", 11, MUTED, 700)
+        color = ("#5A1532" if amount < 5 else "#981842" if amount < 40
+                 else "#D32A63" if amount < 100 else PINK)
+        filled = min(168, (amount + scale - 1) // scale)
+        for cell in range(168):
+            cx = x + 12 + (cell % 14) * 9
+            cy = 660 + (cell // 14) * 9
+            fill = color if cell < filled else "#2B2B2B"
+            body += f'<rect x="{cx}" y="{cy}" width="7" height="7" rx="1" fill="{fill}"/>'
+    unit = "1 commit" if scale == 1 else f"{scale} commits"
+    body += txt(33, 846, f"Cada quadrado colorido = {unit} · dias mais ativos ficam mais rosa", 14, MUTED)
+    body += txt(33, 869, f'Fonte: snapshot verificado em {weekly["verified_on"]} · inclui branches privadas, sem duplicar SHA', 12, MUTED)
+else:
+    body += txt(33, 605, "Os dados semanais autenticados estão indisponíveis.", 18, MUTED)
+save("activity.svg", panel(1200, 892, body, "Contribuições GitHub e commits verificados de TsuyoStudio"))
 
 print("Estatísticas geradas:", [p.name for p in OUT.glob("*.svg")])
