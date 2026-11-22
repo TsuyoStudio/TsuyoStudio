@@ -59,6 +59,31 @@
 
 <br/><br/>
 
+<h3>ATIVIDADE REAL / COMMITS E ALTERAÇÕES</h3>
+
+<p>
+  <strong>Semana de 16 a 22/11/2026:</strong> 492 commits identificados em branches públicas e privadas,
+  sem duplicar SHAs ou contar commits automáticos do bot. Também foram verificados
+  159 arquivos alterados nas branches principais (comparação entre versões,
+  não soma de cada alteração em cada commit).
+</p>
+
+<p>
+  O gráfico mantém o calendário do GitHub e sua ampliação de 13 semanas.
+  Abaixo, o novo painel TS colore <strong>um microquadrado por commit</strong>,
+  com intensidade maior nos dias mais ativos.
+  O calendário oficial e a atividade personalizada são métricas diferentes.
+</p>
+
+<sub>O recorte privado é uma fotografia autenticada em 22/11/2026. As métricas públicas
+continuam em atualização diária. Para atualizar automaticamente também os repos
+privados, o workflow aceita um segredo opcional <code>PROFILE_STATS_TOKEN</code>
+com permissão de leitura nesses repositórios; sem ele, os totais privados
+permanecem identificados pela data de verificação. Nenhum título ou conteúdo
+de commit privado é publicado neste painel.</sub>
+
+<br/><br/>
+
 <img src="./assets/stats-header.svg" width="100%" alt="Sinais de vida: indicadores reais do GitHub" />
 
 <img src="./assets/stats/summary.svg" width="100%" alt="Repositórios, estrelas e seguidores públicos no GitHub" />
@@ -71,11 +96,11 @@
 
 <img src="./assets/stats/activity.svg" width="100%" alt="Calendário real de contribuições de 12 meses e recorte ampliado das últimas 13 semanas" />
 
-<sub>O calendário mostra os dias registrados pelo GitHub. A faixa inferior amplia as últimas 13 semanas com mais quadrados visíveis, sem duplicar a contagem. Contribuições privadas dependem das configurações de visibilidade do perfil e das regras do GitHub.</sub>
+<sub>O calendário oficial mostra as contribuições reconhecidas pelo GitHub. O recorte das 13 semanas e o mapa adicional de commits são separados; no mapa semanal, cada quadrado rosa representa um commit registrado, inclusive nas branches privadas verificadas.</sub>
 
 <br/>
 
-<sub>Estatísticas geradas pela API do GitHub e salvas neste repositório, com atualização diária pelo GitHub Actions. O gráfico de linguagens considera somente repositórios públicos. Os PRs de projetos privados são acessíveis apenas para quem tem permissão.</sub>
+<sub>Estatísticas geradas pela API do GitHub e salvas neste repositório. Gráfico de linguagens: repositórios públicos. Mapa de commits privados: totais agregados datados, sem revelar arquivos ou mensagens internas. PRs privados só são acessíveis com permissão.</sub>
 
 <br/><br/>
 
